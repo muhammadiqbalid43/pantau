@@ -13,7 +13,7 @@ export async function middleware(request: NextRequest) {
   } = await (await createClient()).auth.getUser();
 
   // Protected routes (butuh login)
-  const protectedRoutes = ["/dashboard"];
+  const protectedRoutes = ["/dashboard/home"];
   const isProtectedRoute = protectedRoutes.some((route) =>
     request.nextUrl.pathname.startsWith(route)
   );
@@ -29,7 +29,7 @@ export async function middleware(request: NextRequest) {
 
   // User sudah login tapi akses public route → redirect ke /dashboard
   if (user && isPublicRoute) {
-    return NextResponse.redirect(new URL("/dashboard", request.url));
+    return NextResponse.redirect(new URL("/dashboard/home", request.url));
   }
 
   return response;

@@ -10,7 +10,7 @@ interface MenuContextType {
 const MenuContext = createContext<MenuContextType | undefined>(undefined);
 
 export function MenuProvider({ children }: { children: ReactNode }) {
-  const [activeMenu, setActiveMenu] = useState("/dashboard/home");
+  const [activeMenu, setActiveMenu] = useState("Home");
 
   return (
     <MenuContext.Provider value={{ activeMenu, setActiveMenu }}>
