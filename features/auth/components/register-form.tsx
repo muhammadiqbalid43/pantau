@@ -39,15 +39,18 @@ export function RegisterForm({
   });
 
   async function onSubmit(data: RegisterFormData) {
-    setError(null); // Reset error
-    console.log("Submitting:", data); // ⭐ Debug log
+    setError(null);
 
     try {
       await register(data);
-      // console.log("Register result:", result); // ⭐ Debug log
-    } catch (error) {
-      console.error("Unexpected error:", error); // ⭐ Catch unexpected errors
-      setError("Terjadi kesalahan tidak terduga");
+    } catch (error: any) {
+      // ✅ Re-throw redirect, biarkan Next.js handle
+      if (error?.digest?.startsWith("NEXT_REDIRECT")) {
+        throw error;
+      }
+
+      // Handle error sungguhan
+      setError(error?.message || "Terjadi kesalahan tidak terduga");
     }
   }
 
@@ -69,70 +72,65 @@ export function RegisterForm({
               </div>
             )}
             <FieldGroup>
-              <Field>
-                <Controller
-                  name="name"
-                  control={form.control}
-                  render={({ field, fieldState }) => (
-                    <Field data-invalid={fieldState.invalid}>
-                      <FieldLabel htmlFor="name">Name</FieldLabel>
-                      <Input
-                        {...field}
-                        id="name"
-                        aria-invalid={fieldState.invalid}
-                        placeholder="Muhammad Iqbal"
-                        autoComplete="off"
-                      />
-                      {fieldState.invalid && (
-                        <FieldError errors={[fieldState.error]} />
-                      )}
-                    </Field>
-                  )}
-                />
-              </Field>
-              <Field>
-                <Controller
-                  name="email"
-                  control={form.control}
-                  render={({ field, fieldState }) => (
-                    <Field data-invalid={fieldState.invalid}>
-                      <FieldLabel htmlFor="email">Email</FieldLabel>
-                      <Input
-                        {...field}
-                        id="email"
-                        aria-invalid={fieldState.invalid}
-                        placeholder="m@example.com"
-                        autoComplete="off"
-                      />
-                      {fieldState.invalid && (
-                        <FieldError errors={[fieldState.error]} />
-                      )}
-                    </Field>
-                  )}
-                />
-              </Field>
-              <Field>
-                <Controller
-                  name="password"
-                  control={form.control}
-                  render={({ field, fieldState }) => (
-                    <Field data-invalid={fieldState.invalid}>
-                      <FieldLabel htmlFor="password">Password</FieldLabel>
-                      <Input
-                        {...field}
-                        id="password"
-                        aria-invalid={fieldState.invalid}
-                        placeholder="*******"
-                        autoComplete="off"
-                        type="password"
-                      />
-                      {fieldState.invalid && (
-                        <FieldError errors={[fieldState.error]} />
-                      )}
-                    </Field>
-                  )}
-                />
-              </Field>
+              <Controller
+                name="name"
+                control={form.control}
+                render={({ field, fieldState }) => (
+                  <Field data-invalid={fieldState.invalid}>
+                    <FieldLabel htmlFor="name">Name</FieldLabel>
+                    <Input
+                      {...field}
+                      id="name"
+                      aria-invalid={fieldState.invalid}
+                      placeholder="Muhammad Iqbal"
+                      autoComplete="off"
+                    />
+                    {fieldState.invalid && (
+                      <FieldError errors={[fieldState.error]} />
+                    )}
+                  </Field>
+                )}
+              />
+
+              <Controller
+                name="email"
+                control={form.control}
+                render={({ field, fieldState }) => (
+                  <Field data-invalid={fieldState.invalid}>
+                    <FieldLabel htmlFor="email">Email</FieldLabel>
+                    <Input
+                      {...field}
+                      id="email"
+                      aria-invalid={fieldState.invalid}
+                      placeholder="m@example.com"
+                      autoComplete="off"
+                    />
+                    {fieldState.invalid && (
+                      <FieldError errors={[fieldState.error]} />
+                    )}
+                  </Field>
+                )}
+              />
+              <Controller
+                name="password"
+                control={form.control}
+                render={({ field, fieldState }) => (
+                  <Field data-invalid={fieldState.invalid}>
+                    <FieldLabel htmlFor="password">Password</FieldLabel>
+                    <Input
+                      {...field}
+                      id="password"
+                      aria-invalid={fieldState.invalid}
+                      placeholder="*******"
+                      autoComplete="off"
+                      type="password"
+                    />
+                    {fieldState.invalid && (
+                      <FieldError errors={[fieldState.error]} />
+                    )}
+                  </Field>
+                )}
+              />
               <Field>
                 <Button type="submit" disabled={form.formState.isSubmitting}>
                   {form.formState.isSubmitting ? "Loading..." : "Register"}
