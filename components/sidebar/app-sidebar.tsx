@@ -14,7 +14,7 @@ import { NavItem, NavMain } from "./nav-main";
 const data: { navMain: NavItem[] } = {
   navMain: [
     {
-      title: "Dashboard",
+      title: "Home",
       url: "/dashboard/home",
       icon: "dashboard",
     },

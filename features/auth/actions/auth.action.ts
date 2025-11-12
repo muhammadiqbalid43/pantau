@@ -29,7 +29,7 @@ export async function login(input: LoginFormData) {
   }
 
   revalidatePath("/", "layout");
-  redirect("/dashboard");
+  redirect("/dashboard/home");
 }
 
 export async function register(input: RegisterFormData) {
@@ -80,7 +80,7 @@ export async function register(input: RegisterFormData) {
   }
 
   revalidatePath("/", "layout");
-  redirect("/dashboard");
+  redirect("/dashboard/home");
 }
 
 export async function logout() {
